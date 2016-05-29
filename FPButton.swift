@@ -10,6 +10,8 @@ import UIKit
 
 @IBDesignable class FPButton: UIButton {
 
+    // MARK: Properties
+    
     @IBInspectable var isAlwaysChecked : Bool = false {
         didSet {
             if isAlwaysChecked {
@@ -19,6 +21,7 @@ import UIKit
     }
     @IBInspectable var checked : Bool = false {
         didSet {
+            //print(checked)
             if checked {
                 backgroundColor = borderColor
                 titleLabel?.textColor = UIColor.whiteColor()
@@ -46,18 +49,26 @@ import UIKit
     }
     @IBInspectable var uncheckedBackgroundColor : UIColor = UIColor.clearColor()
     
+    // MARK: Init
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        addTarget(self, action: #selector(buttonPressed), forControlEvents: .TouchUpInside)
+        _init()
     }
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
+        _init()
+    }
+    private func _init() {
         self.highlighted = false
-        
+        addTarget(self, action: #selector(buttonPressed), forControlEvents: .TouchUpInside)
+    }
+    init() {
+        super.init(frame: CGRect(x: 0, y: 0, width: 100, height: 44))
+        _init()
     }
     
+    // MARK: Actions
     
     func buttonPressed() {
         UIView.animateWithDuration(0.2, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 0, options: .CurveEaseIn, animations: { () in
