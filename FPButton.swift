@@ -29,7 +29,6 @@ import UIKit
                 setColor(uncheckedColor)
                 layer.backgroundColor = UIColor.clearColor().CGColor
             }
-            print(checked)
         }
     }
     @IBInspectable var cornerRadius : CGFloat = 5 {
@@ -94,7 +93,6 @@ import UIKit
         UIView.animateWithDuration(0.2, delay: 0.2, usingSpringWithDamping: 0.2, initialSpringVelocity: 0, options: .CurveEaseIn, animations:  { () in
             self.transform = CGAffineTransformMakeScale(1, 1)
             }, completion: nil)
-//        self.checked = !self.checked
     }
     
     
