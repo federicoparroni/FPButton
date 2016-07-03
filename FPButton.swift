@@ -1,6 +1,5 @@
 //
-//  FPButton2.swift
-//  ButtonTest
+//  FPButton.swift
 //
 //  Created by Federico Parroni on 24/06/16.
 //  Copyright © 2016 Federico Parroni. All rights reserved.
