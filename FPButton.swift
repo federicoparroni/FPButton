@@ -1,14 +1,14 @@
 //
-//  RoundedCornerButton.swift
-//  ClaudiasClothes
+//  FPButton2.swift
+//  ButtonTest
 //
-//  Created by Federico Parroni on 20/05/16.
+//  Created by Federico Parroni on 24/06/16.
 //  Copyright © 2016 Federico Parroni. All rights reserved.
 //
 
 import UIKit
 
-@IBDesignable class FPButton: UIButton {
+@IBDesignable public class FPButton: UIButton {
 
     // MARK: Properties
     
@@ -21,37 +21,45 @@ import UIKit
     }
     @IBInspectable var checked : Bool = false {
         didSet {
-            //print(checked)
             if checked {
-                backgroundColor = borderColor
-                titleLabel?.textColor = UIColor.whiteColor()
+                setTitleColor(UIColor.whiteColor(), forState: .Normal)
+                layer.borderColor = checkedColor.CGColor
+                layer.backgroundColor = checkedColor.CGColor
             } else {
-                backgroundColor = uncheckedBackgroundColor
-                titleLabel?.textColor = borderColor
+                setColor(uncheckedColor)
+                layer.backgroundColor = UIColor.clearColor().CGColor
             }
-//            self.setNeedsDisplay()
+            print(checked)
         }
     }
-    @IBInspectable var cornerRadius : Int = 5 {
+    @IBInspectable var cornerRadius : CGFloat = 5 {
         didSet {
             layer.cornerRadius = 5
         }
     }
-    @IBInspectable var borderWidth : Int = 2 {
+    @IBInspectable var borderWidth : CGFloat = 2 {
         didSet {
             layer.borderWidth = 2
         }
     }
-    @IBInspectable var borderColor : UIColor = UIColor.clearColor() {
+    @IBInspectable var checkedColor : UIColor = UIColor.clearColor() {
         didSet {
-            layer.borderColor = borderColor.CGColor
+            if checked {
+                setColor(checkedColor)
+            }
         }
     }
-    @IBInspectable var uncheckedBackgroundColor : UIColor = UIColor.clearColor()
+    @IBInspectable var uncheckedColor : UIColor = UIColor.clearColor() {
+        didSet {
+            if !checked {
+                setColor(uncheckedColor)
+            }
+        }
+    }
     
     // MARK: Init
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         _init()
     }
@@ -59,29 +67,42 @@ import UIKit
         super.init(frame: frame)
         _init()
     }
-    private func _init() {
-        self.highlighted = false
-        addTarget(self, action: #selector(buttonPressed), forControlEvents: .TouchUpInside)
-    }
     init() {
-        super.init(frame: CGRect(x: 0, y: 0, width: 100, height: 44))
+        let defaultFrame = CGRect(x: 0, y: 0, width: 100, height: 44)
+        super.init(frame: defaultFrame)
         _init()
     }
     
+    private func _init() {
+        setColor(UIColor.redColor())
+        layer.borderWidth = self.borderWidth
+        layer.cornerRadius = self.cornerRadius
+        addTarget(self, action: #selector(FPButton.buttonClicked), forControlEvents: .TouchUpInside)
+    }
+    
+    
     // MARK: Actions
     
-    func buttonPressed() {
+    func buttonClicked() {
         UIView.animateWithDuration(0.2, delay: 0, usingSpringWithDamping: 0.2, initialSpringVelocity: 0, options: .CurveEaseIn, animations: { () in
-                self.transform = CGAffineTransformMakeScale(1.03, 1.03)
+            self.transform = CGAffineTransformMakeScale(1.03, 1.03)
             }, completion: { (_) in
                 if !self.isAlwaysChecked {
                     self.checked = !self.checked
                 }
         })
         UIView.animateWithDuration(0.2, delay: 0.2, usingSpringWithDamping: 0.2, initialSpringVelocity: 0, options: .CurveEaseIn, animations:  { () in
-                self.transform = CGAffineTransformMakeScale(1, 1)
+            self.transform = CGAffineTransformMakeScale(1, 1)
             }, completion: nil)
+//        self.checked = !self.checked
     }
-
+    
+    
+    // MARK: Helpers
+    
+    func setColor(color : UIColor) {
+        setTitleColor(color, forState: .Normal)
+        layer.borderColor = color.CGColor
+    }
     
 }
